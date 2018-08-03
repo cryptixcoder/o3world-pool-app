@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Game;
+use App\Models\Player;
 use Illuminate\Http\Request;
 
 class GameController extends Controller
@@ -18,7 +19,8 @@ class GameController extends Controller
     }
 
     public function create(){
-        return view('game.create');
+        $players = Player::all();
+        return view('game.create', compact('players'));
     }
 
     public function store(Request $request){
@@ -31,11 +33,11 @@ class GameController extends Controller
         ]);
 
         //Attach the challenger
-        $game->user->attach($request->challenger, [
+        $game->players()->attach($request->challenger, [
             'type' => 'challenger'
         ]);
 
-        $game->user->attach($request->opponent, [
+        $game->players()->attach($request->opponent, [
             'type' => 'opponent'
         ]);
 
@@ -44,7 +46,8 @@ class GameController extends Controller
     }
 
     public function edit(Game $game){
-        return view('game.edit', compact('game'));
+        $players = Player::all();
+        return view('game.edit', compact('game','players'));
     }
     
     public function update(Request $request, Game $game){
@@ -68,8 +71,35 @@ class GameController extends Controller
         return redirect("/games/{$game->id}")->withSuccess('Game information has been updated.');
     }
 
+    public function start(Game $game){
+        $game->update([
+            'active' => true
+        ]);
+
+        return redirect()->back();
+    }
+
     public function winner(Request $request, Game $game, Player $player){
-        $game->players()->sync([$player->id => ['winner' => true]]);
-        return response()->json(['success' => true]);
+        $game->players()->updateExistingPivot($player->id, ['winner' => true]);
+
+        $game->update([
+            'active' => false,
+            'game_ended' => true
+        ]);
+
+        foreach($game->players as $gamePlayer){
+            if($gamePlayer->id == $player->id){
+                $gamePlayer->update([
+                    'wins' => $gamePlayer->wins + 1
+                ]);
+            }
+            else{
+                $gamePlayer->update([
+                    'losses' => $gamePlayer->losses + 1
+                ]);
+            }
+        }
+
+        return redirect()->back();
     }
 }

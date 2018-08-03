@@ -17,6 +17,7 @@ class CreateGamesTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->boolean('active')->default(false);
+            $table->boolean('has_winner')->default(false);
             $table->timestamps();
         });
     }

@@ -17,6 +17,8 @@ class CreatePlayersTable extends Migration
             $table->increments('id');
             $table->string('avatar')->nullable();
             $table->string('name');
+            $table->integer('wins')->default(0);
+            $table->integer('losses')->default(0);
             $table->timestamps();
         });
     }

@@ -8,10 +8,16 @@ class Player extends Model
 {
     protected $fillable = [
         'name',
-        'avatar'
+        'avatar',
+        'wins',
+        'losses'
     ];
 
     public function games(){
         return $this->belongsToMany(Game::class);
+    }
+
+    public function wonGames(){
+        return $this->games()->wherePivot('winner', '=', true);
     }
 }
