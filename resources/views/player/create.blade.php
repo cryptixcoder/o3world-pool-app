@@ -10,11 +10,16 @@
                     @csrf
                     <div class="form-group">
                         <label>Player Avatar</label>
-                        <input type="file" name="avatar" id="avatar" class="form-control" />
+                        <input type="file" name="avatar" id="avatar" class="form-control-file" />
                     </div>
                     <div class="form-group">
                         <label>Player Name</label>
-                        <input type="text" name="name" id="name" class="form-control" value="{{ old('name') }}" />
+                        <input type="text" name="name" id="name" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" value="{{ old('name') }}" />
+                        @if($errors->has('name'))
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $errors->first('name') }}</strong>
+                            </span>
+                        @endif
                     </div>
                     <div class="form-group">
                         <button type="submit" class="btn btn-primary">Create Player</button>

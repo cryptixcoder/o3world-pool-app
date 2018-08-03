@@ -20,4 +20,8 @@ class Player extends Model
     public function wonGames(){
         return $this->games()->wherePivot('winner', '=', true);
     }
+
+    public function getAvatarAttribute($value){
+        return ($value) ? asset($value) : asset('images/placeholder.jpg');
+    }
 }

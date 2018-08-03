@@ -10503,6 +10503,23 @@ a.text-dark:focus {
   border-color: #ca0000;
 }
 
+.btn-primary:not(:disabled):not(.disabled):active,
+.btn-primary:not(:disabled):not(.disabled).active,
+.show > .btn-primary.dropdown-toggle {
+  color: #fff;
+  background-color: #ca0000;
+  border-color: #ca0000;
+}
+
+.btn-primary:focus,
+.btn-primary.focus,
+.btn:focus,
+.btn.focus {
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  outline: none;
+}
+
 .navbar-light .navbar-toggler {
   border: none;
 }
@@ -10558,6 +10575,14 @@ h3.game-title {
   margin-top: 20px;
 }
 
+.player-block {
+  margin-bottom: 40px;
+}
+
+.preview {
+  margin-bottom: 20px;
+}
+
 .table th,
 .table td {
   vertical-align: middle;
@@ -10572,5 +10597,26 @@ h3.game-title {
   height: auto;
   margin: 0 auto;
   display: block;
+}
+
+.page-item.active .page-link {
+  z-index: 1;
+  color: #fff;
+  background-color: #ca0000;
+  border-color: #ca0000;
+}
+
+*,
+*:focus,
+*:hover {
+  outline: 0 !important;
+}
+
+/* Extra Small Devices, Phones */
+
+@media only screen and (max-width: 480px) {
+  span.player-name {
+    font-size: 12px;
+  }
 }
 

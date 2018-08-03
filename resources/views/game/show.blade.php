@@ -4,13 +4,14 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-6">
-                <h3 class="game-title" align="center">{{ $game->name }}</h3>
+               @include('partials.alerts')
+                <h3 class="game-title" align="center">{{ $game->name }}</h3>            
             </div>
         </div>
         <div class="row justify-content-center">
         @foreach($game->players as $player)
             
-                    <div class="col-md-3">
+                    <div class="col-md-3 player-block">
                         <a href="{{ route('player.show', ['player' => $player]) }}">
                             <img src="{{ asset($player->avatar) }}" style="width:150px; height: 150px; margin:0 auto; display:block;" alt="">
                         </a>

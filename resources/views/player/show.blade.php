@@ -4,6 +4,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-6">
+            @include('partials.alerts')
                 <img src="{{ asset($player->avatar) }}" alt="{{ $player->name }}'s Avatar" class="large-avatar" />
                 <h1 class="player-name" align="center">{{ $player->name }}</h1>
             </div>

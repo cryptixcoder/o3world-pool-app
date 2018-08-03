@@ -10,12 +10,19 @@
                     @csrf
                     <div class="form-group">
                         <label>Player Avatar</label>
-                        <img src="{{ asset($player->avatar) }}" width="50" height="50" class="img-thumbnail" alt="player avatar">
-                        <input type="file" name="avatar" id="avatar" class="form-control" />
+                        <div class="preview">
+                            <img src="{{ asset($player->avatar) }}" width="150" height="150" alt="player avatar">
+                        </div>
+                        <input type="file" name="avatar" id="avatar" class="form-control-file" />
                     </div>
                     <div class="form-group">
                         <label>Player Name</label>
-                        <input type="text" name="name" id="name" class="form-control" value="{{ $player->name }}" />
+                        <input type="text" name="name" id="name" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" value="{{ $player->name }}" />
+                        @if($errors->has('name'))
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $errors->first('name') }}</strong>
+                            </span>
+                        @endif
                     </div>
                     <div class="form-group">
                         <button type="submit" class="btn btn-primary">Update Player</button>

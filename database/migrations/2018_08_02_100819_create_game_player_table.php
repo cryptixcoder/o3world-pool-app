@@ -19,6 +19,9 @@ class CreateGamePlayerTable extends Migration
             $table->integer('player_id')->unsigned();
             $table->enum('type', ['challenger', 'opponent']);
             $table->boolean('won_game')->default(false);
+
+            $table->foreign('game_id')->references('id')->on('games');
+            $table->foreign('player_id')->references('id')->on('players');
         });
     }
 

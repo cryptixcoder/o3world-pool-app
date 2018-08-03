@@ -25,7 +25,9 @@ class GameController extends Controller
 
     public function store(Request $request){
         $this->validate($request, [
-            'name' => 'required'
+            'name' => 'required',
+            'challenger' => 'required',
+            'opponent' => 'required'
         ]);
 
         $game = Game::create([
@@ -46,26 +48,33 @@ class GameController extends Controller
     }
 
     public function edit(Game $game){
+
+        if($game->game_ended){
+            return redirect()->back()->withError('Once a game has ended you cannot edit it.');
+        }
+
         $players = Player::all();
-        return view('game.edit', compact('game','players'));
+
+        $challenger = $game->players()->wherePivot('type','=','challenger')->first();
+        $opponent = $game->players()->wherePivot('type','=','opponent')->first();
+
+        return view('game.edit', compact('game','players','challenger','opponent'));
     }
     
     public function update(Request $request, Game $game){
         $this->validate($request, [
-            'name' => 'required'
+            'name' => 'required',
+            'challenger' => 'required',
+            'opponent' => 'required'
         ]);
 
         $game->update([
             'name' => $request->name
         ]);
 
-        //Attach the challenger
-        $game->user->attach($request->challenger, [
-            'type' => 'challenger'
-        ]);
-
-        $game->user->attach($request->opponent, [
-            'type' => 'opponent'
+        $game->players()->sync([
+            $request->challenger => ['type' => 'challenger'],
+            $request->opponent => ['type' => 'opponent']
         ]);
 
         return redirect("/games/{$game->id}")->withSuccess('Game information has been updated.');
